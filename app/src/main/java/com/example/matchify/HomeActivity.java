@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userFullRef = database.getReference("user-full");
-//    DatabaseReference userProfileRef = database.getReference("user-profile");
+    //    DatabaseReference userProfileRef = database.getReference("user-profile");
     DatabaseReference currentUserRef;
 
     @Override
@@ -84,9 +84,11 @@ public class HomeActivity extends AppCompatActivity implements
         matchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent matchIntent = new Intent(HomeActivity.this, MatchActivity.class);
-                matchIntent.putExtra("userId", me.id);
-                startActivity(matchIntent);
+                if (me != null) {
+                    Intent matchIntent = new Intent(HomeActivity.this, MatchActivity.class);
+                    matchIntent.putExtra("userId", me.id);
+                    startActivity(matchIntent);
+                }
             }
         });
 

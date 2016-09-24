@@ -2,12 +2,17 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    android:layout_width="250dp"
-    android:layout_height="400dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
 
     <TextView
         android:id="@+id/helloText"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:textColor="@android:color/white"
         android:background="#333399"
         android:gravity="center"
