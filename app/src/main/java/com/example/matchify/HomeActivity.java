@@ -1,12 +1,11 @@
 package com.example.matchify;
 
-import android.*;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -22,19 +21,16 @@ import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
-import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.Album;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.UserPrivate;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -212,6 +208,9 @@ public class HomeActivity extends AppCompatActivity implements
             @Override
             public void success(Pager<Artist> artistPager, retrofit.client.Response response) {
                 final List artistList = artistPager.items;
+                while (artistList.size() > 5) {
+                    artistList.remove(artistList.size() - 1);
+                }
                 for (int i = 0; i < artistList.size(); i++) {
                     Object a = artistList.get(i);
                     artistList.set(i, ((Artist) a).name);
@@ -222,7 +221,6 @@ public class HomeActivity extends AppCompatActivity implements
                 topArtistsRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-//                        Log.e("PHONEVALUE", dataSnapshot.getValue().toString());
                         if (dataSnapshot.getValue() == null) {
                             topArtistsRef.setValue(artistList);
                         }
@@ -239,6 +237,43 @@ public class HomeActivity extends AppCompatActivity implements
             @Override
             public void failure(RetrofitError error) {
                 Log.d("artistPager", "FAILURE");
+
+            }
+        });
+
+        spotify.getTopTracks(new Callback<Pager<Track>>() {
+            @Override
+            public void success(Pager<Track> trackPager, retrofit.client.Response response) {
+                final List trackList = trackPager.items;
+                while (trackList.size() > 5) {
+                    trackList.remove(trackList.size() - 1);
+                }
+                for (int i = 0; i < trackList.size(); i++) {
+                    Object a = trackList.get(i);
+                    trackList.set(i, ((Track) a).name);
+                    Log.d("Track", a.toString());
+                }
+//                matchButton.setText(artistList.toString());
+                final DatabaseReference topTracksRef = currentUserRef.child("top-tracks");
+                topTracksRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null) {
+                            topTracksRef.setValue(trackList);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("trackPager", "FAILURE");
 
             }
         });
