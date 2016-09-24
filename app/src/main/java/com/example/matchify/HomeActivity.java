@@ -1,14 +1,23 @@
 package com.example.matchify;
 
+import android.*;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -36,6 +45,7 @@ public class HomeActivity extends AppCompatActivity implements
     Button matchButton;
     Button settingsButton;
 
+
     // TODO: Replace with your client ID
     private static final String CLIENT_ID = "d8ec9b6eb1e64b10bc2d2d081bb06625";
     // TODO: Replace with your redirect URI
@@ -43,9 +53,15 @@ public class HomeActivity extends AppCompatActivity implements
     private static final int REQUEST_CODE = 1337;
 
 
+    TelephonyManager tm;
     //    Player mPlayer;
     SpotifyApi api;
     static UserPrivate me;
+
+    private static final String[] INITIAL_PERMS = {
+            Manifest.permission.READ_SMS, Manifest.permission.READ_PHONE_STATE
+    };
+    private static final int INITIAL_REQUEST = 1337;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userFullRef = database.getReference("user-full");
@@ -56,6 +72,15 @@ public class HomeActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        //Requesting permissions
+        if (Build.VERSION.SDK_INT >= 23 && (PackageManager.PERMISSION_GRANTED != checkSelfPermission(Manifest.permission.READ_SMS) ||
+                PackageManager.PERMISSION_GRANTED != checkSelfPermission(Manifest.permission.READ_PHONE_STATE))) {
+            requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+        }
+
+        tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+
 
         matchButton = (Button) findViewById(R.id.beginMatching);
         settingsButton = (Button) findViewById(R.id.settingsButton);
@@ -108,7 +133,6 @@ public class HomeActivity extends AppCompatActivity implements
         SpotifyService spotify = api.getService();
 
 
-
 //        mTextView.setText(authenticationResponse.getAccessToken());
 
 //        spotify.getAlbum("2dIGnmEIy1WZIcZCFSj6i8", new Callback<Album>() {
@@ -133,15 +157,47 @@ public class HomeActivity extends AppCompatActivity implements
                 Log.d("Spotify_api_email", me.email);
 
                 currentUserRef = userFullRef.child(userPrivate.id);
-                Map<String, String> userDataMap = new HashMap<>();
-
-//                userDataMap.put("display-name",me.display_name);
-                userDataMap.put("email",me.email);
-//                userDataMap.put("birthdate",me.birthdate);
-                Log.d("user-map", userDataMap.toString());
 
 
-                currentUserRef.setValue(userDataMap);
+                final DatabaseReference emailRef = currentUserRef.child("email");
+                emailRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null)
+                            emailRef.setValue(me.email);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+                final DatabaseReference phoneRef = currentUserRef.child("phone-number");
+                phoneRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        Log.e("PHONEVALUE", dataSnapshot.getValue().toString());
+                        if (dataSnapshot.getValue() == null || dataSnapshot.getValue().equals("Number Not Available"))
+                            try {
+                                String number = tm.getLine1Number();
+                                if (number == null) {
+                                    number = "Number Not Available";
+                                }
+                                currentUserRef.child("phone-number").setValue(number);
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Unable to retrieve phone number. Other users will not be able to access your phone number",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
 
             }
 
