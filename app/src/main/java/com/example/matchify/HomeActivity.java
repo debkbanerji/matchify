@@ -84,8 +84,9 @@ public class HomeActivity extends AppCompatActivity implements
         matchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent playIntent = new Intent(HomeActivity.this, MatchActivity.class);
-                startActivity(playIntent);
+                Intent matchIntent = new Intent(HomeActivity.this, MatchActivity.class);
+                matchIntent.putExtra("userId", me.id);
+                startActivity(matchIntent);
             }
         });
 

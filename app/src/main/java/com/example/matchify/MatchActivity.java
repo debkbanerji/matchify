@@ -20,6 +20,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import kaaes.spotify.webapi.android.SpotifyApi;
+
 public class MatchActivity extends AppCompatActivity {
 
     ArrayAdapter<MatchableUser> arrayAdapter;
@@ -29,6 +31,8 @@ public class MatchActivity extends AppCompatActivity {
 
     List<String> curTopTracks;
     List<String> curTopArtists;
+
+    String currID;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userFullRef = database.getReference("user-full");
@@ -42,7 +46,7 @@ public class MatchActivity extends AppCompatActivity {
         flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
         userList = new ArrayList<MatchableUser>();
-
+        currID = getIntent().getExtras().getString("userId");
 
         List<String> dummyTopTracks = new LinkedList<>();
         List<String> dummyTopArtists = new LinkedList<>();
@@ -64,24 +68,30 @@ public class MatchActivity extends AppCompatActivity {
 
                 Map<String, Object> allUsersMap = (Map<String, Object>) dataSnapshot.getValue();
                 for (Map.Entry<String, Object> entry : allUsersMap.entrySet()) {
-                    Map<String, Object> userMap = (Map<String, Object>) entry.getValue();
-                    Log.e("USER DOWNLOADED", userMap.toString());
-                    String username = entry.getKey();
-                    String email = (String) userMap.get("email");
-                    String phoneNumber = (String) userMap.get("phone-number");
-                    if (phoneNumber == null) {
-                        phoneNumber = "Phone number not available";
-                    }
-                    List<String> topTracks = (List<String>) userMap.get("top-tracks");
-                    List<String> topArtists = (List<String>) userMap.get("top-artists");
+                    if (!entry.getKey().equals(currID)) {
+                        Map<String, Object> userMap = (Map<String, Object>) entry.getValue();
+//                        Log.e("USER DOWNLOADED", userMap.toString());
+                        String username = entry.getKey();
+                        String email = (String) userMap.get("email");
+                        String phoneNumber = (String) userMap.get("phone-number");
+                        if (phoneNumber == null) {
+                            phoneNumber = "Phone number not available";
+                        }
+                        List<String> topTracks = (List<String>) userMap.get("top-tracks");
+                        List<String> topArtists = (List<String>) userMap.get("top-artists");
 
-                    MatchableUser matchableUser = new MatchableUser(username, email, phoneNumber, topArtists, topTracks);
-                    userList.add(matchableUser);
+                        MatchableUser matchableUser = new MatchableUser(username, email, phoneNumber, topArtists, topTracks);
+                        userList.add(matchableUser);
 //                    userStringList.add(matchableUser.toString());
+                    } else {
+                        Map<String, Object> userMap = (Map<String, Object>) entry.getValue();
+                        curTopTracks = (List<String>) userMap.get("top-tracks");
+                        curTopArtists = (List<String>) userMap.get("top-artists");
+                    }
                 }
 
-
-//                Log.e("userStringList", userStringList.toString());
+                sortUserList();
+//                Log.e("curtoptracks", curTopTracks.toString());
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -199,7 +209,7 @@ public class MatchActivity extends AppCompatActivity {
                 && curTopArtists != null && curTopArtists.size() > 0
                 && curTopTracks != null && curTopTracks.size() > 0) {
             // sort user list
-
+            Log.e("SORTING", "SORTING");
 
         }
     }
