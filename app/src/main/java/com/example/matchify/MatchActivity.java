@@ -1,5 +1,6 @@
 package com.example.matchify;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 public class MatchActivity extends AppCompatActivity {
 
     ArrayAdapter<String> arrayAdapter;
+    ArrayList<String> userStringList;
     SwipeFlingAdapterView flingContainer;
 
     @Override
@@ -23,11 +25,8 @@ public class MatchActivity extends AppCompatActivity {
         //add the view via xml or programmatically
         flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
-        final ArrayList<String> userStringList = new ArrayList<String>();
-        userStringList.add("php");
-        userStringList.add("c");
-        userStringList.add("python");
-        userStringList.add("java");
+        userStringList = new ArrayList<String>();
+        userStringList.add("Retrieving users...");
 
         //choose your favorite adapter
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.item, R.id.helloText, userStringList);
@@ -63,6 +62,10 @@ public class MatchActivity extends AppCompatActivity {
 //                arrayAdapter.notifyDataSetChanged();
 //                Log.d("LIST", "notified");
 //                i++;
+                if (itemsInAdapter == 0) {
+                    Intent playIntent = new Intent(MatchActivity.this, HomeActivity.class);
+                    startActivity(playIntent);
+                }
             }
 
             @Override
