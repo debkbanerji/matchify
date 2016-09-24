@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "72045147665",
+    "firebase_url": "https://matchify-e0338.firebaseio.com",
+    "project_id": "matchify-e0338",
+    "storage_bucket": "matchify-e0338.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72045147665:android:0e38d4c31d59226f",
+        "android_client_info": {
+          "package_name": "com.example.matchify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72045147665-61o39ue1if5sbjk90gdfkqvvfe53bk9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvQ3TTqkac9u4kkWWEUJmhhCLkfabWagM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

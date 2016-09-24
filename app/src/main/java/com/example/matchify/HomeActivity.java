@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -16,7 +17,9 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -39,17 +42,15 @@ public class HomeActivity extends AppCompatActivity implements
     private static final String REDIRECT_URI = "matchify://callback";
     private static final int REQUEST_CODE = 1337;
 
-//    // TODO: Replace with your client ID
-//    private static final String CLIENT_ID = "99178c58a49f4e27a95fa3e7bac12cb1";
-//    // TODO: Replace with your redirect URI
-//    private static final String REDIRECT_URI = "android-spotify-test://callback";
-//    private static final int REQUEST_CODE = 1337;
 
+    //    Player mPlayer;
+    SpotifyApi api;
+    static UserPrivate me;
 
-    private Player mPlayer;
-    private SpotifyApi api;
-    private static UserPrivate me;
-
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference userFullRef = database.getReference("user-full");
+    DatabaseReference userProfileRef = database.getReference("user-profile");
+    DatabaseReference currentUserRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,19 +107,21 @@ public class HomeActivity extends AppCompatActivity implements
         api.setAccessToken(authenticationResponse.getAccessToken());
         SpotifyService spotify = api.getService();
 
+
+
 //        mTextView.setText(authenticationResponse.getAccessToken());
 
-        spotify.getAlbum("2dIGnmEIy1WZIcZCFSj6i8", new Callback<Album>() {
-            @Override
-            public void success(Album album, retrofit.client.Response response) {
-                Log.d("Album success", album.name);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("Album failure", error.toString());
-            }
-        });
+//        spotify.getAlbum("2dIGnmEIy1WZIcZCFSj6i8", new Callback<Album>() {
+//            @Override
+//            public void success(Album album, retrofit.client.Response response) {
+//                Log.d("Album success", album.name);
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                Log.d("Album failure", error.toString());
+//            }
+//        });
         me = null;
         spotify.getMe(new Callback<UserPrivate>() {
             @Override
@@ -128,6 +131,17 @@ public class HomeActivity extends AppCompatActivity implements
                 Log.d("Spotify_api_me", me.toString());
                 Log.d("Spotify_api_id", me.id);
                 Log.d("Spotify_api_email", me.email);
+
+                currentUserRef = userFullRef.child(userPrivate.id);
+                Map<String, String> userDataMap = new HashMap<>();
+
+//                userDataMap.put("display-name",me.display_name);
+                userDataMap.put("email",me.email);
+//                userDataMap.put("birthdate",me.birthdate);
+                Log.d("user-map", userDataMap.toString());
+
+
+                currentUserRef.setValue(userDataMap);
 
             }
 
