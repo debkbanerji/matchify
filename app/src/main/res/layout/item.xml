@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="20dp"
+    android:layout_gravity="center"
+    android:paddingBottom="16dp"
     android:paddingLeft="20dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp">
+    android:paddingRight="20dp"
+    android:paddingTop="16dp">
 
 
     <TextView
         android:id="@+id/helloText"
-        android:textSize="30sp"
-        android:textColor="@android:color/white"
-        android:background="#333399"
-        android:gravity="center"
-        tools:text="Loading..."
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#52b962"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        tools:text="Loading..." />
 
     <View
         android:id="@+id/item_swipe_left_indicator"
-        android:alpha="0"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="10dp"
-        android:background="#A5F" />
+        android:alpha="0"
+        android:background="@android:color/black" />
 
     <View
         android:id="@+id/item_swipe_right_indicator"
-        android:alpha="0"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_margin="10dp"
         android:layout_gravity="right"
-        android:background="#5AF" />
+        android:layout_margin="10dp"
+        android:alpha="0"
+        android:background="@android:color/black" />
 
 </FrameLayout>

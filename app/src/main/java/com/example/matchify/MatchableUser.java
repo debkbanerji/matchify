@@ -60,7 +60,7 @@ public class MatchableUser {
     @Override
     public String toString() {
         if (name.equals("name")) {
-            return "Swipe to begin matching";
+            return "Swipe to start matching";
         }
         StringBuilder result = new StringBuilder(name);
         result.append("\n\n\n" + "Favorite Artists: " + topArtists.get(0));
