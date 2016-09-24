@@ -9,9 +9,13 @@ public class MatchableUser {
     private String name;
     private List<String> topArtists;
     private List<String> topTracks;
+    private String email;
+    private String phoneNumber;
 
-    public MatchableUser(String name, List<String> topArtists, List<String> topTracks) {
+    public MatchableUser(String name, String email, String phoneNumber, List<String> topArtists, List<String> topTracks) {
         setName(name);
+        setEmail(email);
+        setPhoneNumber(phoneNumber);
         setTopArtists(topArtists);
         setTopTracks(topTracks);
     }
@@ -56,16 +60,32 @@ public class MatchableUser {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder(name);
-        result.append('\n'+"Favorite Artists: " + topArtists.get(0));
+        result.append("\n\n" + "Favorite Artists: " + topArtists.get(0));
         for (int i = 1; i < topArtists.size(); i++) {
             result.append(", " + topArtists.get(i));
         }
 
-        result.append('\n'+"Favorite Tracks: " + topTracks.get(0));
+        result.append("\n\n" + "Favorite Tracks: " + topTracks.get(0));
         for (int i = 1; i < topTracks.size(); i++) {
             result.append(", " + topTracks.get(i));
         }
 
         return result.toString();
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

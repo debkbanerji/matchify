@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userFullRef = database.getReference("user-full");
-    DatabaseReference userProfileRef = database.getReference("user-profile");
+//    DatabaseReference userProfileRef = database.getReference("user-profile");
     DatabaseReference currentUserRef;
 
     @Override

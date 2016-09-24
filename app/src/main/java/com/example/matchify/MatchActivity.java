@@ -7,15 +7,28 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class MatchActivity extends AppCompatActivity {
 
     ArrayAdapter<String> arrayAdapter;
     ArrayList<String> userStringList;
+    ArrayList<MatchableUser> userList;
     SwipeFlingAdapterView flingContainer;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference userFullRef = database.getReference("user-full");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +38,100 @@ public class MatchActivity extends AppCompatActivity {
         //add the view via xml or programmatically
         flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
+        userList = new ArrayList<MatchableUser>();
+
+
+        List<String> dummyTopTracks = new LinkedList<>();
+        List<String> dummyTopArtists = new LinkedList<>();
+        MatchableUser dummyUser = new MatchableUser("name", "email", "phone", dummyTopArtists, dummyTopTracks);
+        userList.add(dummyUser);
         userStringList = new ArrayList<String>();
-        userStringList.add("Retrieving users...");
+        userStringList.add("Swipe to begin matching!");
 
         // Retrieve list of target users
 
+        userFullRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (userStringList.get(0).equals("Retrieving users...")) {
+//                    userStringList.remove(0);
+//                    userList.remove(0);
+//                    arrayAdapter.notifyDataSetChanged();
+//                }
+
+                Map<String, Object> allUsersMap = (Map<String, Object>) dataSnapshot.getValue();
+                for (Map.Entry<String, Object> entry: allUsersMap.entrySet()) {
+                    Map<String, Object> userMap = (Map<String, Object>) entry.getValue();
+                    Log.e("USER DOWNLOADED", userMap.toString());
+                    String username = entry.getKey();
+                    String email = (String) userMap.get("email");
+                    String phoneNumber = (String) userMap.get("phone-number");
+                    if (phoneNumber == null) {
+                        phoneNumber = "Phone number not available";
+                    }
+                    List<String> topTracks = (List<String>) userMap.get("top-tracks");
+                    List<String> topArtists = (List<String>) userMap.get("top-artists");
+
+                    MatchableUser matchableUser = new MatchableUser(username, email, phoneNumber, topArtists, topTracks);
+                    userList.add(matchableUser);
+                    userStringList.add(matchableUser.toString());
+                }
+
+                Log.e("userStringList", userStringList.toString());
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+//        userFullRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Map<String, Object> userMap = (Map<String, Object>) dataSnapshot.getValue();
+//                Log.e("USER DOWNLOADED", userMap.toString());
+//                String username = dataSnapshot.getKey();
+//                String email = (String) userMap.get("email");
+//                String phoneNumber = (String) userMap.get("phone-number");
+//                if (phoneNumber == null) {
+//                    phoneNumber = "Phone number not available";
+//                }
+//                List<String> topTracks = (List<String>) userMap.get("top-tracks");
+//                List<String> topArtists = (List<String>) userMap.get("top-artists");
+//
+//                MatchableUser matchableUser = new MatchableUser(username, email, phoneNumber, topArtists, topTracks);
+//                userList.add(matchableUser);
+//                userStringList.add(matchableUser.toString());
+//
+//                if (userStringList.get(0).equals("Retrieving users...")) {
+//                    userStringList.remove(0);
+//                }
+//
+//                arrayAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         //choose your favorite adapter
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.item, R.id.helloText, userStringList);
@@ -42,6 +144,7 @@ public class MatchActivity extends AppCompatActivity {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
                 userStringList.remove(0);
+                userList.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
