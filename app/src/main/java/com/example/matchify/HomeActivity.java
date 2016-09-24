@@ -42,9 +42,7 @@ public class HomeActivity extends AppCompatActivity implements
     Button settingsButton;
 
 
-    // TODO: Replace with your client ID
     private static final String CLIENT_ID = "d8ec9b6eb1e64b10bc2d2d081bb06625";
-    // TODO: Replace with your redirect URI
     private static final String REDIRECT_URI = "matchify://callback";
     private static final int REQUEST_CODE = 1337;
 

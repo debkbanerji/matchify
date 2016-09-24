@@ -62,6 +62,11 @@ public class MatchableUser {
         if (name.equals("name")) {
             return "Swipe to start matching";
         }
+
+        if (name.equals("end")) {
+            return "Looks like there's no more users :(\nSwipe to return to the home screen";
+        }
+
         StringBuilder result = new StringBuilder(name);
         result.append("\n\n\n" + "Favorite Artists: " + topArtists.get(0));
         for (int i = 1; i < topArtists.size(); i++) {

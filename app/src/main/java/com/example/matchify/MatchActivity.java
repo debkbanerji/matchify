@@ -1,6 +1,7 @@
 package com.example.matchify;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,6 +95,11 @@ public class MatchActivity extends AppCompatActivity {
 
                 sortUserList();
 //                Log.e("curtoptracks", curTopTracks.toString());
+
+                List<String> dummyTopTracks = new LinkedList<>();
+                List<String> dummyTopArtists = new LinkedList<>();
+                MatchableUser endDummyUser = new MatchableUser("end", "email", "phone", dummyTopArtists, dummyTopTracks);
+                userList.add(userList.size(), endDummyUser);
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -176,7 +182,12 @@ public class MatchActivity extends AppCompatActivity {
             @Override
             public void onRightCardExit(Object dataObject) {
 //                Toast.makeText(MatchActivity.this, "Right!", Toast.LENGTH_SHORT).show();
-                //TODO: Handle correct match
+                MatchableUser matchedUser = (MatchableUser) dataObject;
+                Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                smsIntent.putExtra("address", matchedUser.getPhoneNumber());
+                smsIntent.setData(Uri.parse("sms:"));
+                smsIntent.putExtra("sms_body", "Hi," + matchedUser.getName() + ", Matchify's mind-bogglingly awesome algorithm thought we were a good match!");
+                startActivity(smsIntent);
             }
 
             @Override
@@ -231,8 +242,8 @@ public class MatchActivity extends AppCompatActivity {
                     int lhsResult = 0;
                     int rhsResult = 0;
 
-                    for (String a: curTopArtists) {
-                        for (String lhsa: lhs.getTopArtists()) {
+                    for (String a : curTopArtists) {
+                        for (String lhsa : lhs.getTopArtists()) {
                             if (a.equals(lhsa)) {
                                 lhsResult++;
                             } else {
@@ -240,7 +251,7 @@ public class MatchActivity extends AppCompatActivity {
                             }
                         }
 
-                        for (String rhsa: rhs.getTopArtists()) {
+                        for (String rhsa : rhs.getTopArtists()) {
                             if (a.equals(rhsa)) {
                                 rhsResult++;
                             } else {
@@ -249,16 +260,16 @@ public class MatchActivity extends AppCompatActivity {
                         }
                     }
 
-                    for (String t: curTopTracks) {
-                        for (String lhst: lhs.getTopArtists()) {
+                    for (String t : curTopTracks) {
+                        for (String lhst : lhs.getTopArtists()) {
                             if (t.equals(lhst)) {
-                                lhsResult+=3;
+                                lhsResult += 3;
                             }
                         }
 
-                        for (String rhst: rhs.getTopArtists()) {
+                        for (String rhst : rhs.getTopArtists()) {
                             if (t.equals(rhst)) {
-                                rhsResult+=3;
+                                rhsResult += 3;
                             }
                         }
                     }
