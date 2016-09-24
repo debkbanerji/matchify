@@ -24,6 +24,8 @@ import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -233,6 +235,25 @@ public class HomeActivity extends AppCompatActivity implements
                     }
                 });
 
+                final DatabaseReference artistsPickRef = database.getReference("artists-pick/" + me.id);
+                artistsPickRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null) {
+                            HashMap<String, Integer> initialArtistPickMap = new HashMap<String, Integer>();
+                            for (Object artist: artistList) {
+                                initialArtistPickMap.put(artist.toString(), 10);
+                            }
+                            artistsPickRef.setValue(initialArtistPickMap);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -270,6 +291,24 @@ public class HomeActivity extends AppCompatActivity implements
                     }
                 });
 
+                final DatabaseReference tracksPickRef = database.getReference("tracks-pick/" + me.id);
+                tracksPickRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null) {
+                            HashMap<String, Integer> initialtrackPickMap = new HashMap<String, Integer>();
+                            for (Object track: trackList) {
+                                initialtrackPickMap.put(track.toString(), 10);
+                            }
+                            tracksPickRef.setValue(initialtrackPickMap);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override

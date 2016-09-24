@@ -13,6 +13,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -109,51 +111,6 @@ public class MatchActivity extends AppCompatActivity {
             }
         });
 
-//        userFullRef.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Map<String, Object> userMap = (Map<String, Object>) dataSnapshot.getValue();
-//                Log.e("USER DOWNLOADED", userMap.toString());
-//                String username = dataSnapshot.getKey();
-//                String email = (String) userMap.get("email");
-//                String phoneNumber = (String) userMap.get("phone-number");
-//                if (phoneNumber == null) {
-//                    phoneNumber = "Phone number not available";
-//                }
-//                List<String> topTracks = (List<String>) userMap.get("top-tracks");
-//                List<String> topArtists = (List<String>) userMap.get("top-artists");
-//
-//                MatchableUser matchableUser = new MatchableUser(username, email, phoneNumber, topArtists, topTracks);
-//                userList.add(matchableUser);
-//                userStringList.add(matchableUser.toString());
-//
-//                if (userStringList.get(0).equals("Retrieving users...")) {
-//                    userStringList.remove(0);
-//                }
-//
-//                arrayAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
 
         //choose your favorite adapter
         arrayAdapter = new ArrayAdapter<MatchableUser>(this, R.layout.item, R.id.helloText, userList);
@@ -166,8 +123,10 @@ public class MatchActivity extends AppCompatActivity {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
 //                userStringList.remove(0);
+
                 userList.remove(0);
                 arrayAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -183,6 +142,61 @@ public class MatchActivity extends AppCompatActivity {
             public void onRightCardExit(Object dataObject) {
 //                Toast.makeText(MatchActivity.this, "Right!", Toast.LENGTH_SHORT).show();
                 MatchableUser matchedUser = (MatchableUser) dataObject;
+
+                if (matchedUser.getName().equals("name") || matchedUser.getName().equals("end")) {
+                    return;
+                }
+
+//                Log.e("swipe","right");
+
+                DatabaseReference tracksPickRef = database.getReference("tracks-pick/" + currID);
+                for (String track : matchedUser.getTopTracks()) {
+                    DatabaseReference trackRef = tracksPickRef.child(track);
+                    trackRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
+                            if (currentData.getValue() == null) {
+                                currentData.setValue(Integer.valueOf(1));
+                            } else {
+                                Integer result = (Integer.parseInt(currentData.getValue().toString()));
+                                result = new Integer(result.intValue() + 1);
+//                                Log.e("tracks-pick", result.toString());
+                                currentData.setValue(result);
+                            }
+                            return Transaction.success(currentData);
+                        }
+
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                        }
+                    });
+                }
+
+                DatabaseReference artistsPickRef = database.getReference("artists-pick/" + currID);
+                for (String artist : matchedUser.getTopArtists()) {
+                    DatabaseReference artistRef = artistsPickRef.child(artist);
+                    artistRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
+                            if (currentData.getValue() == null) {
+                                currentData.setValue(Integer.valueOf(1));
+                            } else {
+                                Integer result = (Integer.parseInt(currentData.getValue().toString()));
+                                result = new Integer(result.intValue() + 1);
+//                                Log.e("artists-pick", result.toString());
+                                currentData.setValue(result);
+                            }
+                            return Transaction.success(currentData);
+                        }
+
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                        }
+                    });
+                }
+
                 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
                 smsIntent.putExtra("address", matchedUser.getPhoneNumber());
                 smsIntent.setData(Uri.parse("sms:"));
@@ -224,7 +238,7 @@ public class MatchActivity extends AppCompatActivity {
                 && curTopArtists != null && curTopArtists.size() > 0
                 && curTopTracks != null && curTopTracks.size() > 0) {
             // sort user list
-            Log.e("SORTING", "SORTING");
+//            Log.e("SORTING", "SORTING");
             Collections.sort(userList, new Comparator<MatchableUser>() {
                 @Override
                 public int compare(MatchableUser lhs, MatchableUser rhs) {
