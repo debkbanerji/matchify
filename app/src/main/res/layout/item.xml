@@ -9,9 +9,9 @@
         android:id="@+id/helloText"
         android:textSize="20sp"
         android:textColor="@android:color/white"
-        android:background="#E339"
+        android:background="#333399"
         android:gravity="center"
-        tools:text="HELLO WORLD"
+        tools:text="Loading..."
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

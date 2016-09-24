@@ -22,10 +22,13 @@ import java.util.Map;
 
 public class MatchActivity extends AppCompatActivity {
 
-    ArrayAdapter<String> arrayAdapter;
-    ArrayList<String> userStringList;
+    ArrayAdapter<MatchableUser> arrayAdapter;
+//    ArrayList<String> userStringList;
     ArrayList<MatchableUser> userList;
     SwipeFlingAdapterView flingContainer;
+
+    List<String> curTopTracks;
+    List<String> curTopArtists;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userFullRef = database.getReference("user-full");
@@ -45,8 +48,8 @@ public class MatchActivity extends AppCompatActivity {
         List<String> dummyTopArtists = new LinkedList<>();
         MatchableUser dummyUser = new MatchableUser("name", "email", "phone", dummyTopArtists, dummyTopTracks);
         userList.add(dummyUser);
-        userStringList = new ArrayList<String>();
-        userStringList.add("Swipe to begin matching!");
+//        userStringList = new ArrayList<String>();
+//        userStringList.add("Swipe to begin matching!");
 
         // Retrieve list of target users
 
@@ -74,10 +77,10 @@ public class MatchActivity extends AppCompatActivity {
 
                     MatchableUser matchableUser = new MatchableUser(username, email, phoneNumber, topArtists, topTracks);
                     userList.add(matchableUser);
-                    userStringList.add(matchableUser.toString());
+//                    userStringList.add(matchableUser.toString());
                 }
 
-                Log.e("userStringList", userStringList.toString());
+//                Log.e("userStringList", userStringList.toString());
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -134,7 +137,7 @@ public class MatchActivity extends AppCompatActivity {
 //        });
 
         //choose your favorite adapter
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.item, R.id.helloText, userStringList);
+        arrayAdapter = new ArrayAdapter<MatchableUser>(this, R.layout.item, R.id.helloText, userList);
 
         //set the listener and the adapter
         flingContainer.setAdapter(arrayAdapter);
@@ -143,7 +146,7 @@ public class MatchActivity extends AppCompatActivity {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
-                userStringList.remove(0);
+//                userStringList.remove(0);
                 userList.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
