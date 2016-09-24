@@ -211,13 +211,28 @@ public class HomeActivity extends AppCompatActivity implements
         spotify.getTopArtists(new Callback<Pager<Artist>>() {
             @Override
             public void success(Pager<Artist> artistPager, retrofit.client.Response response) {
-                List artistList = artistPager.items;
+                final List artistList = artistPager.items;
                 for (int i = 0; i < artistList.size(); i++) {
                     Object a = artistList.get(i);
                     artistList.set(i, ((Artist) a).name);
                     Log.d("Artist", a.toString());
                 }
-                matchButton.setText(artistList.toString());
+//                matchButton.setText(artistList.toString());
+                final DatabaseReference topArtistsRef = currentUserRef.child("top-artists");
+                topArtistsRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        Log.e("PHONEVALUE", dataSnapshot.getValue().toString());
+                        if (dataSnapshot.getValue() == null) {
+                            topArtistsRef.setValue(artistList);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
             }
 
