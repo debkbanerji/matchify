@@ -10,6 +10,8 @@
         <item name="android:textColorPrimaryInverse">@color/abc_input_method_navigation_guard</item>
         <item name="android:textColorSecondaryInverse">@color/abc_input_method_navigation_guard
         </item>
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
     </style>
+
 
 </resources>
