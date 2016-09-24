@@ -16,6 +16,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -167,12 +169,14 @@ public class MatchActivity extends AppCompatActivity {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                Toast.makeText(MatchActivity.this, "Left!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MatchActivity.this, "Left!", Toast.LENGTH_SHORT).show();
+                //TODO: Handle incorrect match
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                Toast.makeText(MatchActivity.this, "Right!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MatchActivity.this, "Right!", Toast.LENGTH_SHORT).show();
+                //TODO: Handle correct match
             }
 
             @Override
@@ -210,7 +214,61 @@ public class MatchActivity extends AppCompatActivity {
                 && curTopTracks != null && curTopTracks.size() > 0) {
             // sort user list
             Log.e("SORTING", "SORTING");
+            Collections.sort(userList, new Comparator<MatchableUser>() {
+                @Override
+                public int compare(MatchableUser lhs, MatchableUser rhs) {
 
+                    if (lhs.getName().equals("name")) {
+                        return Integer.MIN_VALUE;
+                    }
+
+                    if (rhs.getName().equals("name")) {
+                        return Integer.MAX_VALUE;
+                    }
+                    // To deal with sentinel element
+
+
+                    int lhsResult = 0;
+                    int rhsResult = 0;
+
+                    for (String a: curTopArtists) {
+                        for (String lhsa: lhs.getTopArtists()) {
+                            if (a.equals(lhsa)) {
+                                lhsResult++;
+                            } else {
+                                lhsResult--;
+                            }
+                        }
+
+                        for (String rhsa: rhs.getTopArtists()) {
+                            if (a.equals(rhsa)) {
+                                rhsResult++;
+                            } else {
+                                rhsResult--;
+                            }
+                        }
+                    }
+
+                    for (String t: curTopTracks) {
+                        for (String lhst: lhs.getTopArtists()) {
+                            if (t.equals(lhst)) {
+                                lhsResult+=3;
+                            }
+                        }
+
+                        for (String rhst: rhs.getTopArtists()) {
+                            if (t.equals(rhst)) {
+                                rhsResult+=3;
+                            }
+                        }
+                    }
+
+                    Log.d("LHSRESULT", Integer.toString(lhsResult) + ", " + lhs.toString());
+                    Log.d("RHSRESULT", Integer.toString(rhsResult) + ", " + rhs.toString());
+
+                    return rhsResult - lhsResult;
+                }
+            });
         }
     }
 }
