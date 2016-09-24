@@ -176,11 +176,11 @@ public class HomeActivity extends AppCompatActivity implements
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 //                        Log.e("PHONEVALUE", dataSnapshot.getValue().toString());
-                        if (dataSnapshot.getValue() == null || dataSnapshot.getValue().equals("Number Not Available"))
+                        if (dataSnapshot.getValue() == null || dataSnapshot.getValue().equals("User did not provide phone number"))
                             try {
                                 String number = tm.getLine1Number();
                                 if (number == null) {
-                                    number = "Number Not Available";
+                                    number = "User did not provide phone number";
                                 }
                                 currentUserRef.child("phone-number").setValue(number);
                             } catch (Exception e) {

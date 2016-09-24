@@ -186,7 +186,7 @@ public class MatchActivity extends AppCompatActivity {
                 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
                 smsIntent.putExtra("address", matchedUser.getPhoneNumber());
                 smsIntent.setData(Uri.parse("sms:"));
-                smsIntent.putExtra("sms_body", "Hi," + matchedUser.getName() + ", Matchify's mind-bogglingly awesome algorithm thought we were a good match!");
+                smsIntent.putExtra("sms_body", "Hi, " + matchedUser.getName() + ", I found you through Matchify's mind-bogglingly awesome algorithm!");
                 startActivity(smsIntent);
             }
 
