@@ -63,12 +63,12 @@ public class MatchableUser {
             return "Swipe to begin matching";
         }
         StringBuilder result = new StringBuilder(name);
-        result.append("\n\n" + "Favorite Artists: " + topArtists.get(0));
+        result.append("\n\n\n" + "Favorite Artists: " + topArtists.get(0));
         for (int i = 1; i < topArtists.size(); i++) {
             result.append(", " + topArtists.get(i));
         }
 
-        result.append("\n\n" + "Favorite Tracks: " + topTracks.get(0));
+        result.append("\n\n\n" + "Favorite Tracks: " + topTracks.get(0));
         for (int i = 1; i < topTracks.size(); i++) {
             result.append(", " + topTracks.get(i));
         }

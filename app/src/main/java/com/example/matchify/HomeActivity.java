@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity implements
 
 
         matchButton = (Button) findViewById(R.id.beginMatching);
-        settingsButton = (Button) findViewById(R.id.settingsButton);
+//        settingsButton = (Button) findViewById(R.id.settingsButton);
 
         matchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,13 +89,13 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent playIntent = new Intent(HomeActivity.this, SettingsActivity.class);
-                startActivity(playIntent);
-            }
-        });
+//        settingsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent playIntent = new Intent(HomeActivity.this, SettingsActivity.class);
+//                startActivity(playIntent);
+//            }
+//        });
 
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,

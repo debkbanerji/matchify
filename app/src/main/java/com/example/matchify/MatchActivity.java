@@ -23,7 +23,7 @@ import java.util.Map;
 public class MatchActivity extends AppCompatActivity {
 
     ArrayAdapter<MatchableUser> arrayAdapter;
-//    ArrayList<String> userStringList;
+    //    ArrayList<String> userStringList;
     ArrayList<MatchableUser> userList;
     SwipeFlingAdapterView flingContainer;
 
@@ -63,7 +63,7 @@ public class MatchActivity extends AppCompatActivity {
 //                }
 
                 Map<String, Object> allUsersMap = (Map<String, Object>) dataSnapshot.getValue();
-                for (Map.Entry<String, Object> entry: allUsersMap.entrySet()) {
+                for (Map.Entry<String, Object> entry : allUsersMap.entrySet()) {
                     Map<String, Object> userMap = (Map<String, Object>) entry.getValue();
                     Log.e("USER DOWNLOADED", userMap.toString());
                     String username = entry.getKey();
@@ -79,6 +79,7 @@ public class MatchActivity extends AppCompatActivity {
                     userList.add(matchableUser);
 //                    userStringList.add(matchableUser.toString());
                 }
+
 
 //                Log.e("userStringList", userStringList.toString());
                 arrayAdapter.notifyDataSetChanged();
@@ -191,5 +192,15 @@ public class MatchActivity extends AppCompatActivity {
 //                        Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void sortUserList() {
+        if (userList != null && userList.size() > 0
+                && curTopArtists != null && curTopArtists.size() > 0
+                && curTopTracks != null && curTopTracks.size() > 0) {
+            // sort user list
+
+
+        }
     }
 }
