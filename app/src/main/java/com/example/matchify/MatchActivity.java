@@ -28,6 +28,9 @@ public class MatchActivity extends AppCompatActivity {
         userStringList = new ArrayList<String>();
         userStringList.add("Retrieving users...");
 
+        // Retrieve list of target users
+
+
         //choose your favorite adapter
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.item, R.id.helloText, userStringList);
 
