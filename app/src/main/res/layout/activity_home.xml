@@ -24,4 +24,5 @@
         android:id="@+id/settingsButton"
         android:layout_below="@+id/beginMatching"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
