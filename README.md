@@ -1,4 +1,9 @@
 # Matchify
+![Matchify](additional assets/icon.png?raw=true)
+
+Matchify is a dating application in which users are logged in with Spotify and matched up with other users according to their music preferences.
+
+In the backend, analytics are continuously run in order to intelligently update user's preferences based on the choices they make.
 
 ##Screenshots:
 
