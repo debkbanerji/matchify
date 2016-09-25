@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -67,7 +70,14 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setTitle(Html.fromHtml("<font color='#111111'>Matchify</font>"));
+
         setContentView(R.layout.activity_home);
+
+
 
         //Requesting permissions
         if (Build.VERSION.SDK_INT >= 23 && (PackageManager.PERMISSION_GRANTED != checkSelfPermission(Manifest.permission.READ_SMS) ||

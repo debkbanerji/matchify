@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:layout_margin="5dp"
+    android:background="@drawable/shape"
+    android:orientation="vertical"
     android:paddingBottom="16dp"
+
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingTop="16dp">
@@ -14,7 +18,7 @@
         android:id="@+id/helloText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#52b962"
+        android:background="@color/colorLight"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:textColor="@android:color/black"

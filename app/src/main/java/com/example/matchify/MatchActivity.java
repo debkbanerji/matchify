@@ -2,9 +2,12 @@ package com.example.matchify;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -45,6 +48,11 @@ public class MatchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setTitle(Html.fromHtml("<font color='#11111'>Matchify</font>"));
+
         setContentView(R.layout.activity_match);
 
         //add the view via xml or programmatically

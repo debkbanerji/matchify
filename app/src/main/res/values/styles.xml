@@ -6,12 +6,22 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:colorBackground">@color/background_material_light</item>
+        <!--<item name="android:colorBackground">@color/background_material_light</item>-->
         <item name="android:textColorPrimaryInverse">@color/abc_input_method_navigation_guard</item>
         <item name="android:textColorSecondaryInverse">@color/abc_input_method_navigation_guard
         </item>
         <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <item name="android:actionBarStyle">@style/MyTheme.ActionBarStyle</item>
+        <item name="android:colorBackground">@color/background_material_light</item>
     </style>
 
+
+    <style name="MyTheme.ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
 
 </resources>
