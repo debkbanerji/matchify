@@ -88,6 +88,9 @@ public class HomeActivity extends AppCompatActivity implements
                     Intent matchIntent = new Intent(HomeActivity.this, MatchActivity.class);
                     matchIntent.putExtra("userId", me.id);
                     startActivity(matchIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Pleas wait: connecting to Spotify servers...",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
