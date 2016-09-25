@@ -1,2 +1,1 @@
-# matchify
-Tinder meets Spotify
+# Matchify

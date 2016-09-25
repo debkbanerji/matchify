@@ -1,0 +1,23 @@
+{
+  "name": "matchify-analyzer",
+  "version": "1.0.0",
+  "description": "program for analyzing matchify data and making predictions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node analyzer.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/debkbanerji/matchify-analyzer.git"
+  },
+  "author": "Deb Banerji",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/debkbanerji/matchify-analyzer/issues"
+  },
+  "homepage": "https://github.com/debkbanerji/matchify-analyzer#readme",
+  "dependencies": {
+    "firebase": "^3.4.0"
+  }
+}
