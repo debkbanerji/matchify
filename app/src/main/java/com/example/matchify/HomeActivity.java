@@ -99,7 +99,7 @@ public class HomeActivity extends AppCompatActivity implements
                     matchIntent.putExtra("userId", me.id);
                     startActivity(matchIntent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Pleas wait: connecting to Spotify servers...",
+                    Toast.makeText(getApplicationContext(), "Please wait: connecting to Spotify servers...",
                             Toast.LENGTH_SHORT).show();
                 }
             }
