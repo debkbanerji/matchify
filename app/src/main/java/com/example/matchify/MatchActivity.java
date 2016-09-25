@@ -135,7 +135,8 @@ public class MatchActivity extends AppCompatActivity {
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
 //                Toast.makeText(MatchActivity.this, "Left!", Toast.LENGTH_SHORT).show();
-                //TODO: Handle incorrect match
+
+                // Do nothing - maybe implement negative scoring in the future?
             }
 
             @Override
@@ -200,7 +201,7 @@ public class MatchActivity extends AppCompatActivity {
                 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
                 smsIntent.putExtra("address", matchedUser.getPhoneNumber());
                 smsIntent.setData(Uri.parse("sms:"));
-                smsIntent.putExtra("sms_body", "Hi, " + matchedUser.getName() + ", I found you through Matchify's mind-bogglingly awesome algorithm!");
+                smsIntent.putExtra("sms_body", "Hi, " + matchedUser.getName() + ", I found you through Matchify's mind bogglingly awesome algorithm!");
                 startActivity(smsIntent);
             }
 
@@ -288,8 +289,8 @@ public class MatchActivity extends AppCompatActivity {
                         }
                     }
 
-                    Log.d("LHSRESULT", Integer.toString(lhsResult) + ", " + lhs.toString());
-                    Log.d("RHSRESULT", Integer.toString(rhsResult) + ", " + rhs.toString());
+//                    Log.d("LHSRESULT", Integer.toString(lhsResult) + ", " + lhs.toString());
+//                    Log.d("RHSRESULT", Integer.toString(rhsResult) + ", " + rhs.toString());
 
                     return rhsResult - lhsResult;
                 }
