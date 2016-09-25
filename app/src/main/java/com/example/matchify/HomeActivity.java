@@ -295,7 +295,7 @@ public class HomeActivity extends AppCompatActivity implements
                         if (dataSnapshot.getValue() == null) {
                             for (int i = 0; i < trackList.size(); i++) {
 
-                                trackList.set(i, trackList.get(i).toString().replace(".", "").replace("#", "").replace("$", ""));
+                                trackList.set(i, trackList.get(i).toString().replace(".", "").replace("#", "").replace("$", "").replace("[","").replace("]",""));
                             }
                             topTracksRef.setValue(trackList);
                         }
@@ -314,7 +314,7 @@ public class HomeActivity extends AppCompatActivity implements
                         if (dataSnapshot.getValue() == null) {
                             HashMap<String, Integer> initialtrackPickMap = new HashMap<String, Integer>();
                             for (Object track : trackList) {
-                                initialtrackPickMap.put(track.toString().replace(".", "").replace("#", "").replace("$", ""), 10);
+                                initialtrackPickMap.put(track.toString().replace(".", "").replace("#", "").replace("$", "").replace("[","").replace("]",""), 10);
                             }
                             tracksPickRef.setValue(initialtrackPickMap);
                         }
