@@ -78,7 +78,6 @@ public class HomeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_home);
 
 
-
         //Requesting permissions
         if (Build.VERSION.SDK_INT >= 23 && (PackageManager.PERMISSION_GRANTED != checkSelfPermission(Manifest.permission.READ_SMS) ||
                 PackageManager.PERMISSION_GRANTED != checkSelfPermission(Manifest.permission.READ_PHONE_STATE))) {
@@ -254,7 +253,7 @@ public class HomeActivity extends AppCompatActivity implements
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() == null) {
                             HashMap<String, Integer> initialArtistPickMap = new HashMap<String, Integer>();
-                            for (Object artist: artistList) {
+                            for (Object artist : artistList) {
                                 initialArtistPickMap.put(artist.toString(), 10);
                             }
                             artistsPickRef.setValue(initialArtistPickMap);
@@ -294,6 +293,10 @@ public class HomeActivity extends AppCompatActivity implements
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() == null) {
+                            for (int i = 0; i < trackList.size(); i++) {
+
+                                trackList.set(i, trackList.get(i).toString().replace(".", "").replace("#", "").replace("$", ""));
+                            }
                             topTracksRef.setValue(trackList);
                         }
                     }
@@ -310,8 +313,8 @@ public class HomeActivity extends AppCompatActivity implements
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() == null) {
                             HashMap<String, Integer> initialtrackPickMap = new HashMap<String, Integer>();
-                            for (Object track: trackList) {
-                                initialtrackPickMap.put(track.toString(), 10);
+                            for (Object track : trackList) {
+                                initialtrackPickMap.put(track.toString().replace(".", "").replace("#", "").replace("$", ""), 10);
                             }
                             tracksPickRef.setValue(initialtrackPickMap);
                         }
