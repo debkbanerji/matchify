@@ -64,7 +64,7 @@ public class MatchableUser {
         }
 
         if (name.equals("end")) {
-            return "Swipe to load more users";
+            return "Swipe to continue";
         }
 
         StringBuilder result = new StringBuilder(name);
