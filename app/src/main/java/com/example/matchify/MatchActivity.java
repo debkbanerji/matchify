@@ -70,7 +70,7 @@ public class MatchActivity extends AppCompatActivity {
 
         // Retrieve list of target users
 
-        userFullRef.addValueEventListener(new ValueEventListener() {
+        final ValueEventListener userFullRefListener = userFullRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                if (userStringList.get(0).equals("Retrieving users...")) {
@@ -133,6 +133,7 @@ public class MatchActivity extends AppCompatActivity {
 //                userStringList.remove(0);
 
                 userList.remove(0);
+                userFullRef.removeEventListener(userFullRefListener);
                 arrayAdapter.notifyDataSetChanged();
 
             }
